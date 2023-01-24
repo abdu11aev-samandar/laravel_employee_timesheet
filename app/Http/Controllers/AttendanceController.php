@@ -6,6 +6,7 @@ use App\Models\Attendance;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Gate;
 
 class AttendanceController extends Controller
 {
@@ -65,6 +66,10 @@ class AttendanceController extends Controller
 
     public function reports(Request $request, $id)
     {
+        if (Gate::defines('reports', $id)) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
         //input validation
         $validated = $request->validate([
             'start' => 'required|date',
@@ -88,6 +93,10 @@ class AttendanceController extends Controller
 
     public function all_reports(Request $request)
     {
+        if (Gate::defines('reports')) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
         //input validation
         $validated = $request->validate([
             'start' => 'required|date',
