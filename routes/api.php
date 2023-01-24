@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -32,4 +33,11 @@ Route::middleware('auth:sanctum')->controller(UserController::class)->group(func
     Route::get('/users/{id}', 'show');
     Route::put('/users/{id}', 'update');
     Route::delete('/users/{id}', 'destroy');
+});
+
+Route::middleware('auth:sanctum')->controller(AttendanceController::class)->group(function () {
+    Route::post('/attendance/clock-in', 'clock_in');
+    Route::post('/attendance/clock-out', 'clock_out');
+    Route::get('/attendance/reports/{id}','reports');
+    Route::get('/attendance/reports','all_reports');
 });
